@@ -29,10 +29,8 @@ class TorchDataset:
 
     def __getitem__(self, idx: int) -> dict:
         item = self.images_dataset[idx]
-        # print(item)
-        # print(item['image'].shape)
         image = np.transpose(item['image'], (2, 0, 1)).astype(np.float32) # pytorch expects CHW
-        item['image'] = torch.tensor(image, dtype=torch.float)
+        item['image'] = torch.tensor(image)
         return item
 
 
@@ -65,7 +63,6 @@ class AugmentedDataset(ImagesDataset):
     def __getitem__(self, idx: int) -> dict:
         item = self.images_dataset[idx]
         augmented = self.augmentations(image=item['image'])
-        # print(f'{augmented=}')
         item['image'] = augmented['image']
         return item
 

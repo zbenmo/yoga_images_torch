@@ -12,8 +12,8 @@ def train(train_loader, model, optimizer, device):
         inputs = data['image']
         targets = data['targets']
 
-        inputs = inputs.to(device, dtype=torch.float)
-        targets = targets.to(device, dtype=torch.float)
+        inputs = inputs.to(device)
+        targets = targets.to(device)
 
         optimizer.zero_grad()
         outputs = model(inputs)
@@ -35,7 +35,7 @@ def evaluate(valid_loader, model, device):
             inputs = data['image']
             targets = data['targets']
 
-            inputs = inputs.to(device, dtype=torch.float)
+            inputs = inputs.to(device)
             outputs = model(inputs)
             outputs = torch.argmax(outputs, dim=1).cpu().detach().numpy()
             targets = targets.cpu().detach().numpy()
