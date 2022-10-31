@@ -36,7 +36,7 @@ def create_kfolds(df):
 
 def main():
     data_path = pathlib.Path(r'C:\Users\zbenm\projects\for_Kaggle_days_1\data')
-    path = data_path / r'\images\train_images'
+    path = data_path / r'images\train_images'
     df = pd.read_csv(data_path / 'train.csv')
     df = create_kfolds(df)
     train_df = df.loc[lambda d: d.kfold != 0].reset_index(drop=True)
@@ -51,7 +51,7 @@ def main():
             albumentations.Normalize(
                 mean, std, max_pixel_value=255.0, always_apply=True
             ),
-            albumentations.resize(227, 227, always_apply=True)
+            albumentations.Resize(227, 227, always_apply=True)
         ]
     ) 
     train_ds = create_dataset(paths_of_train_images, train_targets, train_aug)
@@ -82,8 +82,12 @@ def main():
         predictions, valid_targets = training.evaluate(
             valid_loader, model, device=device
         )
-        roc_auc = metrics.roc_auc_score(valid_targets, predictions)
-        print(f'{epoch=}, {roc_auc=}')
+        print(type(predictions))
+        print(predictions.shape)
+        print(type(valid_targets))
+        print(valid_targets.shape)
+        accuracy = metrics.accuracy_score(valid_targets, predictions)
+        print(f'{epoch=}, {accuracy=}')
 
 
 if __name__ == "__main__":
